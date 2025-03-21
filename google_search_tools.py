@@ -54,24 +54,31 @@ class Tools:
         )
     
     async def _emit_citation(self,
-                            __event_emitter__: Callable[[dict], Any],
-                            title: str,
-                            url: str,
-                            content: str):
+                             __event_emitter__: Callable[[dict], Any],
+                             title: str,
+                             url: str,
+                             content: str,
+                             index: int = None):
         """发送引用信息"""
+        data = {
+            "document": [content],
+            "metadata": [
+                {
+                    "date_accessed": datetime.now().isoformat(),
+                    "source": title,
+                }
+            ],
+            "source": {"name": title, "url": url},
+        }
+        
+        # 如果提供了索引，添加到数据中
+        if index is not None:
+            data["index"] = index
+        
         await __event_emitter__(
             {
                 "type": "citation",
-                "data": {
-                    "document": [content],
-                    "metadata": [
-                        {
-                            "date_accessed": datetime.now().isoformat(),
-                            "source": title,
-                        }
-                    ],
-                    "source": {"name": title, "url": url},
-                },
+                "data": data
             }
         )
     
@@ -243,13 +250,13 @@ class Tools:
                                 citations_html += f"<li>[{i+1}] <a href='{uri}' target='_blank'>{title}</a></li>\n"
                             
                             # 为每个引用源发送citation事件，明确指定索引号
-                            # 在citation_content前面添加索引号，确保AI知道应该使用哪个索引号
-                            indexed_citation_content = f"[{i+1}] {citation_content}"
+                            # 不再需要在content中添加索引号，因为我们现在直接传递索引参数
                             await self._emit_citation(
                                 __event_emitter__,
                                 title,
                                 uri,
-                                indexed_citation_content
+                                citation_content,
+                                i + 1  # 传递从1开始的索引
                             )
                     citations_html += "</ol>\n\n"
                     
