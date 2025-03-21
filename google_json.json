@@ -1,0 +1,124 @@
+
+{
+	"candidates": [
+		{
+			"content": {
+				"parts": [
+					{
+						"text": "以下是今日的一些新闻：\n\n*   **中国公民因涉嫌协助伊朗恐怖组织被美国联邦调查局通缉：** 美国联邦调查局（FBI）于3月19日对4名中国公民发出通缉，指控他们涉嫌帮助伊朗伊斯兰革命卫队（IRGC）获得美国出口管制军民两用技术。美国国务院悬赏高达1500万美元（约新台币5亿）。\n*   **台海局势：** 中国大陆于3月17日间接宣布解放军在台海附近展开军事演习。台湾国防部长顾立雄表示，国防部掌握的是中国将进行“联合战备警巡”。\n*   **中美贸易：** 根据2020年美中第一阶段贸易协议，大陆授予美国肉品工厂输出大陆的注册资格中，有一千多家工厂的资格失效。\n*   **NBA赛事：** 3月20日，洛杉矶湖人队对阵丹佛金块队。Luka Doncic仅出战三节就攻下31分、9篮板、7助攻，带领洛杉矶湖人以大比分战胜对手。\n*   **台湾中华职棒：** 中信兄弟与富邦悍将进行正面对决。前统一狮王牌投手胜骑士转战“黄衫军”后首次先发。\n\n请注意，由于新闻时效性强，以上只是一些例子，更多的新闻请参考我提供的链接。"
+					}
+				],
+				"role": "model"
+			},
+			"finishReason": "STOP",
+			"groundingMetadata": {
+				"searchEntryPoint": {
+					"renderedContent": "<style>\n.container {\n  align-items: center;\n  border-radius: 8px;\n  display: flex;\n  font-family: Goog"
+				},
+				"groundingChunks": [
+					{
+						"web": {
+							"uri": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AQXblrwYmlvjKKzxoIRIdksRzUpZe-KN5PO-y2QUOIAYJzKv8lEoMhiWX37oh_5nm68YGR7yBUgaXGcmxCsKoobbukkhSEAvPGIaNqpZc_GxxJXHYkRFvQ==",
+							"title": "nownews.com"
+						}
+					},
+					{
+						"web": {
+							"uri": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AQXblrwr-o2M-qDI_-wCek-N4GCHTTjqzqf6-9p7JIRKkicr5aK6B5Djsl9V3FG80EhmUuRmZcfsUI4DNwzd0SLDcKpJoGalbf-_5Vr1cF8=",
+							"title": "udn.com"
+						}
+					}
+				],
+				"groundingSupports": [
+					{
+						"segment": {
+							"startIndex": 35,
+							"endIndex": 369,
+							"text": "*   **中国公民因涉嫌协助伊朗恐怖组织被美国联邦调查局通缉：** 美国联邦调查局（FBI）于3月19日对4名中国公民发出通缉，指控他们涉嫌帮助伊朗伊斯兰革命卫队（IRGC）获得美国出口管制军民两用技术。美国国务院悬赏高达1500万美元（约新台币5亿）。"
+						},
+						"groundingChunkIndices": [
+							0
+						],
+						"confidenceScores": [
+							0.9405742
+						]
+					},
+					{
+						"segment": {
+							"startIndex": 370,
+							"endIndex": 574,
+							"text": "*   **台海局势：** 中国大陆于3月17日间接宣布解放军在台海附近展开军事演习。台湾国防部长顾立雄表示，国防部掌握的是中国将进行“联合战备警巡”。"
+						},
+						"groundingChunkIndices": [
+							1
+						],
+						"confidenceScores": [
+							0.7071059
+						]
+					},
+					{
+						"segment": {
+							"startIndex": 575,
+							"endIndex": 747,
+							"text": "*   **中美贸易：** 根据2020年美中第一阶段贸易协议，大陆授予美国肉品工厂输出大陆的注册资格中，有一千多家工厂的资格失效。"
+						},
+						"groundingChunkIndices": [
+							1
+						],
+						"confidenceScores": [
+							0.7476992
+						]
+					},
+					{
+						"segment": {
+							"startIndex": 748,
+							"endIndex": 934,
+							"text": "*   **NBA赛事：** 3月20日，洛杉矶湖人队对阵丹佛金块队。Luka Doncic仅出战三节就攻下31分、9篮板、7助攻，带领洛杉矶湖人以大比分战胜对手。"
+						},
+						"groundingChunkIndices": [
+							0
+						],
+						"confidenceScores": [
+							0.93918353
+						]
+					},
+					{
+						"segment": {
+							"startIndex": 935,
+							"endIndex": 1085,
+							"text": "*   **台湾中华职棒：** 中信兄弟与富邦悍将进行正面对决。前统一狮王牌投手胜骑士转战“黄衫军”后首次先发。"
+						},
+						"groundingChunkIndices": [
+							0
+						],
+						"confidenceScores": [
+							0.93169045
+						]
+					}
+				],
+				"retrievalMetadata": {},
+				"webSearchQueries": [
+					"今日新闻"
+				]
+			}
+		}
+	],
+	"usageMetadata": {
+		"promptTokenCount": 2,
+		"candidatesTokenCount": 328,
+		"totalTokenCount": 330,
+		"promptTokensDetails": [
+			{
+				"modality": "TEXT",
+				"tokenCount": 2
+			}
+		],
+		"candidatesTokensDetails": [
+			{
+				"modality": "TEXT",
+				"tokenCount": 328
+			}
+		]
+	},
+	"modelVersion": "gemini-2.0-flash"
+}
