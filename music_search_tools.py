@@ -115,13 +115,13 @@ class Tools:
             result += f"**歌曲ID**: {data.get('id', '未知')}\n"
             result += f"**时长**: {data.get('market', '未知')}\n"
             
-            # 添加封面图片
+            # 添加封面图片（小尺寸）
             if data.get('img'):
                 if __event_emitter__:
                     await __event_emitter__(
                         {
                             "type": "message",
-                            "data": {"content": f"![歌曲封面]({data['img']})"},
+                            "data": {"content": f"**歌曲封面**：[点击查看]({data['img']})\n"},
                         }
                     )
             
@@ -141,8 +141,9 @@ class Tools:
             
             # 添加音乐链接
             if data.get('mp3'):
-                result += f"\n### 音乐链接\n\n"
-                result += f"[点击播放]({data['mp3']})\n"
+                result += f"\n### 歌曲链接\n\n"
+                result += f"**歌曲链接**：[点击播放]({data['mp3']})\n"
+                result += f"**时长**：{data.get('market', '未知')}\n"
             
             # 添加引用
             if __event_emitter__:
