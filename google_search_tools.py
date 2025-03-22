@@ -187,7 +187,7 @@ class Tools:
                     # 首先创建一个映射，记录每个chunk的索引号
                     chunk_to_index = {}
                     for i, chunk in enumerate(grounding_chunks):
-                        chunk_to_index[i] = i + 1  # 索引号从1开始
+                        chunk_to_index[i] = i  # 索引号从0开始
                     
                     # 然后创建一个映射，记录每个文本段落应该使用哪些引用
                     text_to_citations = {}
@@ -199,7 +199,7 @@ class Tools:
                                 citations = []
                                 for idx in chunk_indices:
                                     if idx < len(grounding_chunks):
-                                        # 使用chunk_to_index确保索引号一致
+                                        # 使用chunk_to_index确保索引号一致，使用Markdown格式
                                         citations.append(f"[{chunk_to_index[idx]}]")
                                 if citations:
                                     text_to_citations[text] = " ".join(citations)
@@ -212,8 +212,8 @@ class Tools:
                 
                 # 发送引用信息
                 if grounding_chunks and grounding_supports:
-                    # 创建引用来源列表
-                    citations_html = "<h3>引用来源</h3>\n<ol>\n"
+                    # 创建引用来源列表（使用Markdown格式，用```引用来源包裹）
+                    citations_md = "```引用来源\n### 引用来源\n\n"
                     
                     # 创建chunk索引到support文本的映射
                     chunk_to_supports = {}
@@ -226,6 +226,7 @@ class Tools:
                             if "text" in segment:
                                 chunk_to_supports[chunk_idx].append(segment["text"])
                     
+                    # 为每个groundingChunk创建一个引用条目
                     for i, chunk in enumerate(grounding_chunks):
                         if "web" in chunk:
                             title = chunk["web"].get("title", "未知来源")
@@ -233,24 +234,26 @@ class Tools:
                             
                             # 获取与此chunk关联的文本内容
                             support_texts = chunk_to_supports.get(i, [])
+                            
+                            # 创建Markdown格式的引用条目
+                            citations_md += f"{i+1}. [{title}]({uri})\n"
+                            
                             if support_texts:
-                                # 使用实际引用的文本内容
+                                # 合并所有相关的支持文本
                                 citation_content = "\n\n".join(support_texts)
-                                # 处理引用内容的格式，确保HTML正确闭合
-                                # 转义特殊字符，防止HTML解析错误
-                                formatted_content = citation_content.replace("\n", "<br>")
-                                formatted_content = formatted_content.replace("<", "&lt;").replace(">", "&gt;")
+                                # 添加引用内容（使用Markdown引用格式）
+                                formatted_texts = []
+                                for text in support_texts:
+                                    # 将每个支持文本格式化为Markdown引用格式
+                                    formatted_text = "\n   ".join(text.split("\n"))
+                                    formatted_texts.append(f"   {formatted_text}")
                                 
-                                # 使用更简单的HTML结构，确保标签正确闭合
-                                citations_html += f"<li>[{i+1}] <a href='{uri}' target='_blank'>{title}</a>\n"
-                                citations_html += f"<div class='citation-content'>{formatted_content}</div>\n"
-                                citations_html += "</li>\n"
+                                citations_md += "\n" + "\n\n".join(formatted_texts) + "\n\n"
                             else:
                                 citation_content = f"引用来源 [{i+1}]: {title}"
-                                citations_html += f"<li>[{i+1}] <a href='{uri}' target='_blank'>{title}</a></li>\n"
+                                citations_md += "\n"
                             
                             # 为每个引用源发送citation事件，明确指定索引号
-                            # 不再需要在content中添加索引号，因为我们现在直接传递索引参数
                             await self._emit_citation(
                                 __event_emitter__,
                                 title,
@@ -258,10 +261,12 @@ class Tools:
                                 citation_content,
                                 i + 1  # 传递从1开始的索引
                             )
-                    citations_html += "</ol>\n\n"
+                    
+                    # 添加结束标记
+                    citations_md += "```\n"
                     
                     # 将引用信息添加到消息体的上下文中
-                    await self._emit_message(__event_emitter__, f"\n\n{citations_html}")
+                    await self._emit_message(__event_emitter__, f"\n\n{citations_md}")
                 
                 # 注意：移除了尝试将搜索信息添加到上下文的方法，因为这种方法不可行
                 
@@ -279,7 +284,7 @@ class Tools:
                 
                 # 如果有引用信息，添加引用列表到内容中
                 if grounding_chunks and grounding_supports:
-                    new_content += f"\n\n{citations_html}"
+                    new_content += f"\n\n{citations_md}"
                 
                 # 修改原始响应中的内容，替换为我们创建的新内容
                 if result.get("candidates") and len(result["candidates"]) > 0:
