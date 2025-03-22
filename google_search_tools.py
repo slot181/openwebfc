@@ -212,8 +212,8 @@ class Tools:
                 
                 # 发送引用信息
                 if grounding_chunks and grounding_supports:
-                    # 创建引用来源列表（使用Markdown格式，用```引用来源包裹）
-                    citations_md = "```引用来源\n### 引用来源\n\n"
+                    # 创建引用来源列表（使用可折叠的HTML标签包裹）
+                    citations_md = "\n<details>\n<summary>引用来源</summary>\n\n"
                     
                     # 创建chunk索引到support文本的映射
                     chunk_to_supports = {}
@@ -263,7 +263,7 @@ class Tools:
                             )
                     
                     # 添加结束标记
-                    citations_md += "```\n"
+                    citations_md += "\n</details>\n"
                     
                     # 将引用信息添加到消息体的上下文中
                     await self._emit_message(__event_emitter__, f"\n\n{citations_md}")
