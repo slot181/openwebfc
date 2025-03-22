@@ -51,17 +51,36 @@ class Tools:
                 return f"搜索失败: {data.get('msg', '未知错误')}"
             
             # 构建搜索结果
-            result = "### 搜索结果\n\n"
-            
             if not data.get("data"):
                 return "未找到相关歌曲"
             
-            # 构建表格显示搜索结果
-            result += "| 序号 | 歌曲名 | 歌手 | 歌曲ID |\n"
-            result += "| --- | ------ | ---- | ------ |\n"
+            # 通过事件发射器发送搜索结果标题
+            if __event_emitter__:
+                await __event_emitter__(
+                    {
+                        "type": "message",
+                        "data": {"content": "\n<details>\n<summary>歌曲列表</summary>\n\n"},
+                    }
+                )
             
+            # 为每首歌曲单独发送一个事件，使用简洁的列表形式
             for i, song in enumerate(data["data"]):
-                result += f"| {i+1} | {song['name']} | {song['singer']} | {song['id']} |\n"
+                song_info = f"{i+1}. **{song['name']}** - {song['singer']} (ID: {song['id']})"
+                if __event_emitter__:
+                    await __event_emitter__(
+                        {
+                            "type": "message",
+                            "data": {"content": f"{song_info}\n"},
+                        }
+                    )
+            
+            if __event_emitter__:
+                await __event_emitter__(
+                    {
+                        "type": "message",
+                        "data": {"content": "\n</details>\n"},
+                    }
+                )
             
             # 发送完成状态
             if __event_emitter__:
@@ -72,6 +91,8 @@ class Tools:
                     }
                 )
             
+            # 为了兼容性，仍然返回一个结果字符串
+            result = "搜索完成。"
             return result
         
         except Exception as e:
