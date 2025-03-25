@@ -1,8 +1,8 @@
 """
-title: Google实时搜索
+title: 实时信息查询
 author: OpenWebUI
 author_url: https://openwebui.com
-description: 这个工具允许您进行实时网络搜索，获取最新信息和事实，并在回复中包含引用来源
+description: 当用户询问最新信息、事实、新闻、数据或当前事件时，可以使用此工具获取实时网络数据。适用于任何可能需要最新信息或超出训练数据范围的问题。
 version: 1.3.0
 license: MIT
 requirements: requests, pydantic
@@ -127,7 +127,7 @@ class Tools:
         
         return text
 
-    async def web_search(
+    async def get_realtime_information(
         self,
         query: str,
         __event_emitter__: Callable[[dict], Any],
@@ -135,9 +135,15 @@ class Tools:
         __metadata__: Optional[Dict] = None
     ) -> str:
         """
-        执行网络搜索，获取最新信息
+        当用户询问需要最新信息、实时数据或训练数据之外的知识时，可以调用此方法执行网络搜索
+        适用场景:
+        - 询问最新新闻或事件
+        - 查询实时数据或统计信息
+        - 寻找训练数据截止日期后的信息
+        - 需要验证事实或获取准确信息
+        - 询问"现在"、"最近"、"最新"相关的问题
         
-        :param query: 搜索查询字符串
+        :param query: 从用户问题中提取的搜索查询字符串
         :param __event_emitter__: 状态更新事件发射器
         :param __messages__: 对话历史记录
         :param __metadata__: 对话元数据

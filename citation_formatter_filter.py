@@ -1,5 +1,5 @@
 """
-title: 引用格式化过滤器
+title: 引用包装与索引清理器
 author: Roo
 description: 这个过滤器将AI搜索到的来源列表用反引号包裹起来，并过滤掉引用来源列表以外文本中的索引标签[]
 version: 1.2.0
@@ -12,7 +12,7 @@ import re
 
 class Filter:
     """
-    引用格式化过滤器 - 将AI搜索到的来源列表用反引号包裹起来，并过滤掉引用来源列表以外文本中的索引标签[]
+    引用包装与索引清理器 - 将AI搜索到的来源列表用反引号包裹起来，并过滤掉引用来源列表以外文本中的索引标签[]
     """
     
     class Valves(BaseModel):
@@ -50,8 +50,8 @@ class Filter:
                 content = message["content"]
                 
                 # 查找引用来源列表
-                # 匹配以"<h3>引用来源</h3>"开头，以"</ol>"结尾的部分
-                citation_pattern = r'(<h3>引用来源</h3>\s*<ol>.*?</ol>)'
+                # 匹配任何以<details>开头并以</details>结尾的内容
+                citation_pattern = r'(<details>.*?</details>)'
                 
                 # 使用正则表达式查找引用来源列表
                 citation_matches = list(re.finditer(citation_pattern, content, re.DOTALL))
