@@ -1,8 +1,8 @@
 """
-title: 网络搜索工具
+title: 网络搜索服务
 author: OpenWebUI
 author_url: https://openwebui.com
-description: 在面对需要最新信息、事实、新闻、数据或其他任何需要使用网络搜索查询的事件时，可以通过执行这个网络搜索工具来获取最新的内容
+description: 用于获取最新信息、新闻、数据、事实、游戏资讯、小说内容、影视作品、体育赛事、科技动态、产品评测、学术研究、旅游信息和时事热点的综合网络搜索服务
 version: 1.3.0
 license: MIT
 requirements: requests, pydantic
@@ -138,9 +138,9 @@ class Tools:
         __event_emitter__: Callable[[dict], Any]
     ) -> str:
         """
-        执行网络搜索，获取网上最新内容
+        执行网络搜索，获取网络上的最新信息
 
-        :param query: 根据上下文提取关键字查询
+        :param query: 根据上下文和用户回复提取关键字查询
         :param __event_emitter__: 状态更新事件发射器
         :return: 搜索结果（JSON字符串格式）
         """

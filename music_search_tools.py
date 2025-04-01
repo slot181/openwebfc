@@ -1,8 +1,8 @@
 """
 title: 音乐助手
-author: Roo
-author_url: https://github.com/roo
-description: 当用户想要搜索音乐或表达想听音乐的意图时，可以使用此工具搜索和提供音乐信息。
+author: OpenWebUI
+author_url: https://openwebui.com
+description: 用于提供歌曲、专辑、艺术家及音乐相关信息的音乐搜索服务
 required_open_webui_version: 0.4.0
 requirements: requests
 version: 1.1.0
@@ -29,14 +29,9 @@ class Tools:
     
     async def find_songs(self, query: str, __event_emitter__=None) -> str:
         """
-        当用户表达以下意图时可以调用此方法搜索音乐:
-        - 询问有关特定歌曲的信息
-        - 询问"有什么好听的歌"或类似推荐请求
-        - 提及歌曲名称
-        - 询问歌词或音乐相关内容
+        执行音乐搜索，获取相关音乐列表信息
 
-        触发词: 歌曲, 音乐, 专辑
-        :param query: 从用户问题中提取的歌曲
+        :param query: 从上下文和用户回复中提取歌曲名字查询
         """
         try:
             # 发送状态更新
@@ -96,9 +91,9 @@ class Tools:
                         "data": {"description": "搜索完成", "done": True},
                     }
                 )
-            
-            # 为了兼容性，仍然返回一个结果字符串
-            result = "搜索完成，已获取歌曲列表，请根据歌曲序号告诉我想听哪一首，我会使用 ‘get_song_detail’ 方法获取歌曲详情。"
+
+            # 返回一个结果字符串进行提示
+            result = "搜索完成，已获取歌曲列表，请根据歌曲序号告诉我想听哪一首。"
             return result
         
         except Exception as e:
@@ -113,17 +108,10 @@ class Tools:
     
     async def get_song_detail(self, query: str, song_number: int, __event_emitter__=None) -> str:
         """
-        当用户选择了特定歌曲或表达想了解某首歌详细信息时可以调用此方法
+        执行某首歌曲的搜索，获取相关歌曲的详细信息
 
-        适用场景:
-        - 用户指定了歌曲序号或ID
-        - 用户明确表示想听列表中的某首歌
-        - 用户询问特定歌曲的详细信息、歌词或评论
-        - 在find_songs返回结果后进一步选择
-
-        触发词: 听，唱，选择, 第几首, 播放, 听这首
-        :param query: 要搜索的歌曲名称
-        :param song_number: 歌曲序号（从阿拉伯数字1开始）
+        :param query: 从上下文和用户回复中提取歌曲名字查询
+        :param song_number: 从音乐列表中获取歌曲序号查询
         """
         try:
             # 发送状态更新
